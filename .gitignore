@@ -1,0 +1,8 @@
+*.la
+*.a
+*.o
+*.d
+*.lo
+*~
+test/lcs
+test/test_diff

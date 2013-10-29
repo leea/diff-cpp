@@ -3,7 +3,7 @@
 
 #include "Matrix.h"
 #include "RandomAccessSequence.h"
-#include "diff_err.h"
+#include "DiffErr.h"
 #include <cassert>
 #include <sstream>
 #include <list>
@@ -143,8 +143,6 @@ class MyersAlgorithm {
       
     u_int row, col;
 
-    assert(D < INT32_MAX);
-
     if ((k == -D) || 
         (k != D && V[k-1] < V[k+1]))
       col = V[k+1];
@@ -208,6 +206,7 @@ public:
   
   bool is_overlapped(Vector &forward, Position &bisect) {
     debugOut << " is_overlapped: \n"; 
+    
     assert(dir==REVERSE);
 
     int32_t kBegin = k_begin();
@@ -388,7 +387,6 @@ lcs (RandomAccessIterator begin1, RandomAccessIterator end1,
      OutputIterator output){
   
   typedef RandomAccessSequence<RandomAccessIterator> RandAccSeqTy;
-  typedef typename std::iterator_traits<RandomAccessIterator>::value_type ElementTy;
 
   RandAccSeqTy Orig(begin1, end1);
   RandAccSeqTy New(begin2, end2);
