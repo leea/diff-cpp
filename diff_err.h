@@ -3,19 +3,13 @@
  */
 
 
-/* Error handling functions from Richard Steven's "Advanced
-   Programming in the Unix Environment" */
-#include <cstdlib>
 #include <cstdio>
-#include <cstring>
 #include <iostream>
 
-#define MAXLINE 256
-
 #ifdef DEBUG
-#define debugOut cout
+#define debugOut std::cout
 #else
-#define debugOut if (false) cout
+#define debugOut if (false) std::cout
 #endif
 
 

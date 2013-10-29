@@ -40,7 +40,7 @@ public:
     ++y; ++x;
     return *this;
   }
-  friend ostream &operator << (ostream &out, Position &p) {  
+  friend std::ostream &operator << (std::ostream &out, Position &p) {  
     return out << "(" << p.x << "," << p.y << ")"; 
   } 
 };
@@ -81,7 +81,7 @@ class MyersAlgorithm {
 
     Position norm = normalize(front);
 
-    debugOut << " snake: front=" << front  << " normalized=" << norm << endl;
+    debugOut << " snake: front=" << front  << " normalized=" << norm << std::endl;
     
     assert(front.y <= Orig.size() && front.x <= New.size());
     while (front.y < Orig.size() && front.x < New.size() && 
@@ -152,7 +152,7 @@ class MyersAlgorithm {
       col = V[k-1] + 1;
     row = col - k;
       
-    debugOut << "  x=" << col << " y=" << row << endl; 
+    debugOut << "  x=" << col << " y=" << row << std::endl; 
       
     if (row > Orig.size() || col > New.size()) {
       debugOut << "  Outside Matrix col=" << col << " row=" <<row <<"\n";
@@ -186,7 +186,7 @@ public:
     for (int32_t k = kBegin; k <= kEnd; k+=2) {
 
       Position furthest =  furthest_Dpath_on_diagonal_K(k); 
-      debugOut << "  end=" << furthest << endl; 
+      debugOut << "  end=" << furthest << std::endl; 
 
       V[k] = furthest.x;
 
@@ -227,7 +227,7 @@ public:
       reversePos = normalize(reversePos);
 
       debugOut << "  k=" << k << " forwardPos=" << forwardPos 
-               << " reversePos=" << reversePos << endl;
+               << " reversePos=" << reversePos << std::endl;
 
       if (forwardPos.x >= reversePos.x){
         bisect = forwardPos;
@@ -297,7 +297,7 @@ class Diff  {
                LCSList &LCS) {
 
     debugOut << "do_diff Orig.size=" << Orig.size()
-             << " New.size=" << New.size() << endl;
+             << " New.size=" << New.size() << std::endl;
     
     dprintMatrix(Orig, New);
  
@@ -388,7 +388,7 @@ lcs (RandomAccessIterator begin1, RandomAccessIterator end1,
      OutputIterator output){
   
   typedef RandomAccessSequence<RandomAccessIterator> RandAccSeqTy;
-  typedef typename iterator_traits<RandomAccessIterator>::value_type ElementTy;
+  typedef typename std::iterator_traits<RandomAccessIterator>::value_type ElementTy;
 
   RandAccSeqTy Orig(begin1, end1);
   RandAccSeqTy New(begin2, end2);

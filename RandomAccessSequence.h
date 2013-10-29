@@ -10,7 +10,7 @@ class RandomAccessSequence {
   _RandomAccessInputIterator _end;
   size_t _len;
 public:
-  typedef typename iterator_traits<_RandomAccessInputIterator>::value_type ElemTy;
+  typedef typename std::iterator_traits<_RandomAccessInputIterator>::value_type ElemTy;
   RandomAccessSequence() {}
   RandomAccessSequence(_RandomAccessInputIterator b,
                        _RandomAccessInputIterator e):

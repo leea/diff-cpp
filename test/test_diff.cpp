@@ -8,7 +8,10 @@
 #include "lcs.h"
 //#include "Difference.h"
 
-using namespace std;
+using std::vector;
+using std::cout;
+using std::endl;
+using std::string;
 
 const char * usage = "Prints the difference between two strings\n %s: <string> <string>\n";
 const bool longstr = true;

@@ -9,6 +9,8 @@ OBJS = test_diff.o lcs.o
 
 INCLUDE = -I ../
 
+check: all
+
 all: test_diff lcs
 	./test_diff
 
@@ -27,8 +29,7 @@ test_diff: test_diff.o
 	$(CXX) -MM $(CXXFLAGS) $(INCLUDE) $< > $*.d
 
 clean:
-	rm test_diff lcs $(OBJS) *.d > /dev/null
-
+	@rm -f test_diff lcs $(OBJS) *.d > /dev/null
 
 ifdef DEBUG
 CXXFLAGS += -g 

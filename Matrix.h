@@ -8,7 +8,7 @@
 
 typedef unsigned int u_int;
 
-using namespace std;
+using std::vector;
 // Static 2D Vector class using a 1D array as the backing store.
 template <typename T>
 class Matrix

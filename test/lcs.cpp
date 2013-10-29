@@ -9,6 +9,8 @@
 
 const char* usage = "Usage:\n lcs <file> <file>\n";
 
+using namespace std;
+
 template < typename T >
 void run_lcs(vector<T> &o, vector<T> &n) 
 {
