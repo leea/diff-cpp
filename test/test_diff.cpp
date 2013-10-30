@@ -84,72 +84,6 @@ bool test_case(vector<T> &o, vector<T> &n, vector<T> &ExpectedLCS, bool longstr=
 }
 
 template < typename T >
-bool test_length(vector<T> &o, vector<T> &n, vector<T> &ExpectedLCS, bool longstr=false) 
-{
-  cout << "========\n";
-  if (longstr){
-    cout << " A[0]..A["<< o.size() <<"] = "<< string(o.begin(), o.begin() + 10) << "..."
-	 << string(o.end()-10, o.end()) <<"\n" 
-	 << " B[0]..B["<< n.size() <<"] = " << string(n.begin(), n.begin()+ 10) << "..."
-	 << string(n.end()-10, n.end()) <<"\n";
-  } else {
-    cout << " A = "<< string(o.begin(), o.end())
-	 << " B = " << string(n.begin(), n.end()) << "\n";
-  }
-
-  clock_t start_time = clock();
-
-  vector<T> LCS(n.size());
-  typename vector<T>::iterator end = lcs(o.begin(), o.end(),
-					 n.begin(), n.end(), 
-					 LCS.begin());
-  clock_t end_time = clock();
-  
-  LCS.resize(end-LCS.begin());
-
-  if (longstr){
-    cout << " LCS(A,B) = " <<  string(LCS.begin(), LCS.begin()+10) << "..."
-	 << string(LCS.end()-10, LCS.end()) <<"\n";
-    cout << " Length = " << LCS.end() - LCS.begin() << endl;
-  } else {
-    cout << " LCS(A,B) = " <<  string(LCS.begin(), LCS.end()) << "\n";
-  }
-
-  // Test calculating the LCS in both directions.  The LCS function is
-  // a commutative function so the result should be the same.
-  
-  vector<T> LCSSwap(n.size());
-  typename vector<T>::iterator endSwap = lcs(n.begin(), n.end(),
-					     o.begin(), o.end(), 
-					     LCSSwap.begin());
-  LCSSwap.resize(endSwap-LCSSwap.begin());
-
-  if (longstr) {
-    cout << " LCS(B,A) = " <<  string(LCSSwap.begin(), LCSSwap.begin()+10) << "..."
-	 << string(LCSSwap.end()-10, LCSSwap.end()) <<"\n"
-         << " Length = " << LCSSwap.end() - LCSSwap.begin() << endl
-	 << " Expected   " << string (ExpectedLCS.begin(), ExpectedLCS.begin()+10) << "..." 
-	 << string(ExpectedLCS.end()-10, ExpectedLCS.end()) << endl
-         << " Length = " << ExpectedLCS.end() - ExpectedLCS.begin() << endl;
-  
-  } else {
-    cout << " LCS(B,A) = " <<  string(LCSSwap.begin(), LCSSwap.end()) << endl
-	 << " Expected   " << string (ExpectedLCS.begin(), ExpectedLCS.end()) << endl;
-  }
-  double cpu_time_secs = ((end_time - start_time)/(double)CLOCKS_PER_SEC)*1000;
-  cout << " Time spent = " << cpu_time_secs <<" ms\n";
-
-  if ((LCS == ExpectedLCS) && (LCSSwap == ExpectedLCS)) {
-    cout << "Passed!" << endl;
-    return true;
-  } else {
-    cout << "FAIL!" << endl;
-    exit(-1);
-    return false;
-  }
-}
-
-template < typename T >
 bool test_speed(vector<T> &o, vector<T> &n, vector<T> &ExpectedLCS, bool longstr=false) 
 {
   cout << "========\n";
@@ -173,11 +107,13 @@ bool test_speed(vector<T> &o, vector<T> &n, vector<T> &ExpectedLCS, bool longstr
   
   LCS.resize(end-LCS.begin());
 
-  if (longstr){
+  if (longstr) {
     cout << " LCS(A,B) = " <<  string(LCS.begin(), LCS.begin()+10) << "..."
-	 << string(LCS.end()-10, LCS.end()) <<"\n";
+	 << string(LCS.end()-10, LCS.end()) <<"\n"
+         << " Length = " << LCS.end() - LCS.begin() << endl;
   } else {
-    cout << " LCS(A,B) = " <<  string(LCS.begin(), LCS.end()) << "\n";
+    cout << " LCS(A,B) = " <<  string(LCS.begin(), LCS.end()) << "\n"
+         << " Length = " << LCS.end() - LCS.begin() << endl;
   }
 
   double cpu_time_secs = ((end_time - start_time)/(double)CLOCKS_PER_SEC)*1000;

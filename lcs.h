@@ -45,7 +45,11 @@ public:
   } 
 };
 
-
+/*  Hirshberg's linear space refinement relies on being able to run
+ *  the same algorithm in the forward and reverse direction. When the
+ *  direction is FORWARD, the algorithm starts at (0, 0) and searches
+ *  forward. When the direction is REVERSE, the algorithm stars at
+ *  (Orig.size(), New.size()) and searches backward. */
 typedef enum {FORWARD, REVERSE} Direction;
 
 template < Direction dir,
@@ -58,7 +62,7 @@ class MyersAlgorithm {
   _RandomAccessSequenceTy New;
   int size_delta;
 
-  uint32_t D;
+  unsigned D;
   Vector V;
 
 /** Takes a position that would be an offset from the beginning of the
@@ -77,7 +81,7 @@ class MyersAlgorithm {
     
     @param Front the first position
 */
-  inline Position snake(Position front){
+  inline Position snake(Position front) {
 
     Position norm = normalize(front);
 
@@ -91,6 +95,7 @@ class MyersAlgorithm {
       norm = normalize(front);
     }
     return front;
+
   }
 
   /**
@@ -106,14 +111,15 @@ class MyersAlgorithm {
       // Since diagonals are increased with steps of 2, set the
       // starting diagonal depending on whether the delta of D and
       // Orig.size is even or odd.
-      int delta = D - Orig.size();
+      const int delta = D - Orig.size();
       
       if (delta % 2 == 0){
         return -(Orig.size()-2);
       } else {
         return -(Orig.size()-1);
       }
-    } else return -D;
+    } 
+    else return -D;
   }
 
   /**
@@ -130,36 +136,14 @@ class MyersAlgorithm {
       // Since diagonals are increased with steps of 2, set the
       // ending diagonal depending on whether the delta of D and
       // New.size is even or odd.
-      int delta = D - New.size();
+      const int delta = D - New.size();
       if (delta % 2 == 0){
         return (New.size()-2);
       } else {
         return (New.size()-1);
       }
-    } else return D;
-  }
-
-  Position furthest_Dpath_on_diagonal_K(int32_t k) {
-      
-    u_int row, col;
-
-    if ((k == -D) || 
-        (k != D && V[k-1] < V[k+1]))
-      col = V[k+1];
-    else
-      col = V[k-1] + 1;
-    row = col - k;
-      
-    debugOut << "  x=" << col << " y=" << row << std::endl; 
-      
-    if (row > Orig.size() || col > New.size()) {
-      debugOut << "  Outside Matrix col=" << col << " row=" <<row <<"\n";
-      return Position(col, row);
-    }
-      
-    //Extend snake
-    
-    return snake(Position(col, row));
+    } 
+    else return D;
   }
 
 
@@ -175,15 +159,32 @@ public:
     if(dir==FORWARD) {debugOut<< "Forward: \n";} else debugOut<< "Reverse: \n";
     debugOut << " trace_D_path: ";
 
-    int32_t kBegin = k_begin();
-    int32_t kEnd = k_end();
+    int kBegin = k_begin();
+    int kEnd = k_end();
 
     debugOut << "D=" << D << " k=" << kBegin << " to " << kEnd << "\n";
-    
-    // For each diagonal k
-    for (int32_t k = kBegin; k <= kEnd; k+=2) {
 
-      Position furthest =  furthest_Dpath_on_diagonal_K(k); 
+    assert(D < INT_MAX); //TODO make this an error case?
+
+    // For each diagonal k
+    for (int k = kBegin; k <= kEnd; k+=2) {
+      unsigned row, col;
+
+      if ((k == -(int)D) || 
+          (k != (int)D && V[k-1] < V[k+1]))
+        col = V[k+1];
+      else
+        col = V[k-1] + 1;
+      row = col - k;
+      
+      debugOut << "  x=" << col << " y=" << row << std::endl; 
+      
+      if (row > Orig.size() || col > New.size()) {
+        debugOut << "  Outside Matrix col=" << col << " row=" <<row <<"\n";
+        continue;
+      }
+      
+      Position furthest =  snake(Position(col, row));
       debugOut << "  end=" << furthest << std::endl; 
 
       V[k] = furthest.x;
