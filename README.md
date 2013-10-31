@@ -2,11 +2,11 @@ diff-cpp is a template library for computing the longest common subsequence.
 
 # Usage
 
-template < typename RandomAccessIterator, typename OutputIterator >
-OutputIterator 
-lcs (RandomAccessIterator begin1, RandomAccessIterator end1,
-     RandomAccessIterator begin2, RandomAccessIterator end2,
-     OutputIterator output);
+    template < typename RandomAccessIterator, typename OutputIterator >
+    OutputIterator 
+    lcs (RandomAccessIterator begin1, RandomAccessIterator end1,
+    	 RandomAccessIterator begin2, RandomAccessIterator end2,
+     	 OutputIterator output);
 
 
 diff-cpp follows the calling convention similar to STL
