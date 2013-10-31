@@ -154,13 +154,13 @@ vector<char> * read_ascii_file (string name)
 int main(int argc, char *argv[])
 {
   
-  //Base cases - Empty LCS
+  //Trivial cases - Empty LCS
   test_case("", "a", "");
   test_case("b", "a", "");
   test_case("ab", "cd", "");
   test_case("asdfghjk","qwertyiu","");
 
-  //Base cases - Length 1 LCS
+  //Trivial cases - Length 1 LCS
   test_case("a", "a", "a");
   test_case("ba", "a", "a");
   test_case("ab", "a", "a");
@@ -171,14 +171,15 @@ int main(int argc, char *argv[])
   test_case("bad", "taca", "a");
   test_case("bab", "atacata", "a");
   test_case("bad", "atacat", "a");
-
+  
+  //Length 2 LCS
   test_case("bad", "ad", "ad");
   test_case("bad", "ba", "ba");
   test_case("bad", "dba", "ba");
   test_case("read", "ea", "ea");
-  test_case("bad", "bacad", "bad");
-
   test_case("34cd78w", "78z", "78");
+
+  test_case("bad", "bacad", "bad");
   test_case("7890", "78a90", "7890");
   test_case("7890a", "7890", "7890");
   test_case("a7890", "7890", "7890");
