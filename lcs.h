@@ -251,24 +251,26 @@ public:
 };
 
 
-template <typename _RandomAccessSequenceTy>
+template <typename _RandomAccessSequenceTy,
+          typename OutputIterator>
 class Diff  { 
   typedef std::list<typename _RandomAccessSequenceTy::ElemTy> LCSList;
-
+  
   //The Longest Common Subsequence for the two sequences
-  LCSList _LCS;
+  OutputIterator _LCS;  
   
   //Eat up common elements at the beginning of both sequences
   inline void eatPrefix(_RandomAccessSequenceTy &Orig, 
                         _RandomAccessSequenceTy &New, 
-                        LCSList &prefix) {
+                        OutputIterator &prefix) {
 
     while ((Orig.size() != 0 && New.size() != 0) &&
            (*Orig.begin() == *New.begin())) {
 
       debugOut << "Added " <<  *Orig.begin() <<"\n";
       //Append the common element to the LCS
-      prefix.push_back(New.pop_front());
+      *prefix = New.pop_front();
+      prefix++;
       //Remove it from both sequences
       Orig.pop_front();
     
@@ -292,32 +294,35 @@ class Diff  {
     }
   }
 
-  void do_diff(_RandomAccessSequenceTy Orig, 
-               _RandomAccessSequenceTy New,
-               LCSList &LCS) {
+  OutputIterator do_diff(_RandomAccessSequenceTy Orig, 
+                         _RandomAccessSequenceTy New,
+                         OutputIterator &LCS) {
 
     debugOut << "do_diff Orig.size=" << Orig.size()
              << " New.size=" << New.size() << std::endl;
     
     dprintMatrix(Orig, New);
  
-    LCSList prefix, suffix;
+    LCSList suffix;
     //Eat up common elements at the beginning and end of the sequence
-    eatPrefix(Orig, New, prefix);
+    eatPrefix(Orig, New, LCS);
     eatSuffix(Orig, New, suffix);
-    
+
     //If the problem is trivial, solve it
     if (Orig.size() == 0 || New.size() == 0){
       //lcs is empty do nothing
     } 
     else if (Orig.size() == 1){
-      if (New.contains(Orig[0]))
-        LCS.push_front(Orig[0]);
+      if (New.contains(Orig[0])){
+        *LCS=Orig[0]; 
+        LCS++;
+      }
     } 
     else if (New.size() == 1) { 
-      if  (Orig.contains(New[0]))
-        LCS.push_front(New[0]);
-
+      if  (Orig.contains(New[0])){
+        *LCS=New[0];
+        LCS++;
+      }
     //Otherwise find the bisection point, and compute the diff of the left and right part
     } else {
      _RandomAccessSequenceTy origLeft, origRight, newLeft, newRight;
@@ -329,18 +334,13 @@ class Diff  {
     
       // Compute the diffs of the left and right part
       LCSList left, right;
-      do_diff(origLeft, newLeft, left);
-      do_diff(origRight, newRight, right);
-      
-      // Join the results
-      LCS.splice(LCS.begin(), right);
-      LCS.splice(LCS.begin(), left);
-
+      do_diff(origLeft, newLeft, LCS);
+      do_diff(origRight, newRight, LCS);
     }
 
     //Add the prefix and suffix back;
-    if (!prefix.empty()) LCS.splice(LCS.begin(), prefix);
-    if (!suffix.empty()) LCS.splice(LCS.end(), suffix);
+    if (!suffix.empty()) LCS = std::copy(suffix.begin(), suffix.end(), LCS);
+    return LCS;
   }
 
   Position bisect( _RandomAccessSequenceTy Orig, 
@@ -369,12 +369,13 @@ class Diff  {
 
 public:
   Diff(_RandomAccessSequenceTy Orig, 
-       _RandomAccessSequenceTy New)
+       _RandomAccessSequenceTy New,
+       OutputIterator LCS)
   {
-    do_diff(Orig, New, _LCS);   
+    _LCS = do_diff(Orig, New, LCS);   
   }
 
-  inline LCSList & LCS() {    
+  inline OutputIterator & LCS() {    
     return _LCS;
   }
 };
@@ -393,9 +394,9 @@ lcs (RandomAccessIterator begin1, RandomAccessIterator end1,
   RandAccSeqTy New(begin2, end2);
   
   
-  Diff<RandAccSeqTy> Instance(Orig, New);
+  Diff<RandAccSeqTy, OutputIterator> Instance(Orig, New, output);
   
-  return std::copy(Instance.LCS().begin(), Instance.LCS().end(), output);
+  return  Instance.LCS();
 }
 
 
