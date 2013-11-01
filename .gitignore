@@ -4,5 +4,7 @@
 *.d
 *.lo
 *~
+gmon.out
+*.prof
 test/lcs
 test/test_diff
