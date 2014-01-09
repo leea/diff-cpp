@@ -6,7 +6,6 @@
 #include <ctime>
 
 #include "lcs.h"
-//#include "Difference.h"
 
 using std::vector;
 using std::cout;

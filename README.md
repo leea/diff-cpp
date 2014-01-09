@@ -34,9 +34,10 @@ element is returned.
 
 diff-cpp implements the Longest Common Subsequence algorithm described
 by Eugene Myers[1] with the divide and conquer linear space refinement
-described by Hirshberg[2].  This algorithm is highly performant - with
-sequence lengths near 10,000 and SES length around 10%, this algorithm
-typically finishes under 10ms my test system (1.8Ghz Core2
+described by Hirshberg[2], and optimizations from Neil Fraser's
+diff-patch-match library[3]. The final algorithm is highly performant -
+with sequence lengths near 10,000 and SES length around 10%, this
+algorithm typically finishes under 10ms my test system (1.8Ghz Core2
 Duo).
 
 [1] An O(ND) Difference Algorithm and Its Variations.  Eugene
@@ -45,3 +46,5 @@ Myers. Algorithmica 1986
 [2] A Linear Space Algorithm for Computing Maximal Common
 Subsequences. Dan S. Hirshberg. Communications of the ACM. 1975
 Vol. 18 No. 6
+
+[3] Google-diff-patch-match. https://code.google.com/p/google-diff-match-patch/
