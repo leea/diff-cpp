@@ -13,7 +13,7 @@ diff-cpp follows the calling convention similar to STL <algorithm>.
 The two sequences must be accessible through a Random Access Iterator,
 and the longest common subsequence is copied into the Output Iterator
 output.  The return value is the iterator pointing past the last
-element is returned.
+element.
 
 
 # Example
